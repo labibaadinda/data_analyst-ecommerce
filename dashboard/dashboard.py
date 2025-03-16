@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import time
 
-
 # Get the directory where app.py is located
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -220,7 +219,7 @@ elif page == "Graph additional for get Insights":
     top_cities = df_customer['customer_city'].value_counts().nlargest(5)
 
     # Streamlit Title
-    st.subheader("📍 Top 5 Customer Cities")
+    st.title("📍 Top 5 Customer Cities")
 
     # Display the table in Streamlit
     df_top_cities = top_cities.reset_index()
@@ -249,7 +248,7 @@ elif page == "Graph additional for get Insights":
     payment_counts = df_payments['payment_type'].value_counts()
 
     # Streamlit Title
-    st.subheader("💳 Most Used Payment Types by Customers")
+    st.title("💳 Most Used Payment Types by Customers")
 
     # Display the table in Streamlit
     df_payment_types = payment_counts.reset_index()
@@ -277,7 +276,7 @@ elif page == "Graph additional for get Insights":
     top_products = df_category['product_category_name'].value_counts().nlargest(10)
 
     # Streamlit Title
-    st.subheader("🛒 Top 10 Most Purchased Products")
+    st.title("🛒 Top 10 Most Purchased Products")
 
     # Display the table in Streamlit
     df_top_products = top_products.reset_index()
@@ -298,6 +297,5 @@ elif page == "Graph additional for get Insights":
     # Display the chart in Streamlit
     st.pyplot(fig)
     
-    st.write(' ')
-    st.write(' ')
+
     

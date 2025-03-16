@@ -4,6 +4,10 @@ io==_io
 collections==collections
 functools==_functools
 requests==2.32.3
-matplotlib==3.10.0
+matplotlib==3.8.2
 seaborn==0.13.2
 numpy==1.26.4
+streamlit==1.43.1
+os==nt
+glob==Built-in
+time==Built-in
