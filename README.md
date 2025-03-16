@@ -5,7 +5,6 @@
 ![Dashboard Screenshot 3](image3.png)
 
 
-[**E-Commerce Data Dashboard Streamlit App**](#)  
 
 ## 📖 Table of Contents
 - [Overview](##overview)
@@ -86,7 +85,7 @@ jupyter notebook notebook.ipynb
 ---
 
 ## 📊 Data Sources
-This project uses the **E-Commerce Public Dataset** from **(https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download)**.
+This project uses the **E-Commerce Public Dataset** from **[https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download]**.
 
 ---
 
