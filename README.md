@@ -42,7 +42,7 @@ The goal is to analyze customer behavior, purchase patterns, and key business me
 │   ├── cleaned_order_2017.csv     # Order data from 2017
 │   ├── cleaned_order_2018.csv     # Order data from 2018
 │   ├── cleaned_order_payments_dataset.csv  # Payment details
-│   ├── logo.png        # Project logo
+│   ├── logo.png        # logo
 ├── notebook.ipynb      # Jupyter notebook for data wrangling & EDA
 ├── README.md           # Project documentation (this file)
 ├── requirements.txt    # Python dependencies
