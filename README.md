@@ -8,19 +8,19 @@
 [**E-Commerce Data Dashboard Streamlit App**](#)  
 
 ## 📖 Table of Contents
-- [Overview](#overview)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Data Sources](#data-sources)
+- [Overview](##overview)
+- [Project Structure](##project-structure)
+- [Installation](##installation)
+- [Usage](##usage)
+- [Data Sources](#$data-sources)
 
 ---
 
 ## 📌 Overview
 This project is a **data analysis and visualization** project focused on **E-Commerce Public Data**. It includes:
-- ✅ **Data Wrangling**: Cleaning and preparing the dataset
-- ✅ **Exploratory Data Analysis (EDA)**: Gaining insights from data
-- ✅ **Streamlit Dashboard**: Interactive visualizations
+-  **Data Wrangling**: Cleaning and preparing the dataset
+-  **Exploratory Data Analysis (EDA)**: Gaining insights from data
+-  **Streamlit Dashboard**: Interactive visualizations
 
 The goal is to analyze customer behavior, purchase patterns, and key business metrics.
 
@@ -86,7 +86,7 @@ jupyter notebook notebook.ipynb
 ---
 
 ## 📊 Data Sources
-This project uses the **E-Commerce Public Dataset** from **[Dicoding’s Final Project](https://www.dicoding.com/)**.
+This project uses the **E-Commerce Public Dataset** from **(https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download)**.
 
 ---
 
