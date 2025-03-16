@@ -1,0 +1,2 @@
+# access my app
+https://dataanalyst-ecommerce-dicoding-labibaadinda.streamlit.app/
