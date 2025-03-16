@@ -74,7 +74,6 @@ To launch the interactive dashboard:
 cd submission/dashboard
 streamlit run dashboard.py
 ```
-The dashboard will be available at **http://localhost:8501/**
 
 ### 📈 **Perform Data Wrangling & EDA**
 Use Jupyter Notebook for data analysis:
