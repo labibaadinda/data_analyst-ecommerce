@@ -56,8 +56,8 @@ To run this project, follow these steps:
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/data-analyst-dicoding.git
-cd data-analyst-dicoding
+git clone [https://github.com/yourusername/data-analyst-dicoding.git](https://github.com/labibaadinda/data_analyst-ecommerce-dicoding.git)
+cd data_analyst-ecommerce-dicoding
 ```
 
 ### 2️⃣ Install Required Dependencies
