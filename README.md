@@ -38,9 +38,9 @@ The goal is to analyze customer behavior, purchase patterns, and key business me
 │   ├── cleaned_df_seller.csv      # Seller information
 │   ├── cleaned_df_product.csv     # Product details
 │   ├── cleaned_geolocation_dataset.csv  # Geolocation dataset
-│   ├── cleaned_order_2016.csv     # Order data from 2016
-│   ├── cleaned_order_2017.csv     # Order data from 2017
-│   ├── cleaned_order_2018.csv     # Order data from 2018
+│   ├── cleaned_order_2016.csv     # Order data in 2016
+│   ├── cleaned_order_2017.csv     # Order data in 2017
+│   ├── cleaned_order_2018.csv     # Order data in 2018
 │   ├── cleaned_order_payments_dataset.csv  # Payment details
 │   ├── logo.png        # logo
 ├── notebook.ipynb      # Jupyter notebook for data wrangling & EDA
