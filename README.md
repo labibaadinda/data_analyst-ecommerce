@@ -19,6 +19,7 @@
 This project is a **data analysis and visualization** project focused on **E-Commerce Public Data**. It includes:
 -  **Data Wrangling**: Cleaning and preparing the dataset
 -  **Exploratory Data Analysis (EDA)**: Gaining insights from data
+-  **Visualization & Explanatory Analysis**: Visualize insights
 -  **Streamlit Dashboard**: Interactive visualizations
 
 The goal is to analyze customer behavior, purchase patterns, and key business metrics.
