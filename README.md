@@ -85,7 +85,7 @@ jupyter notebook notebook.ipynb
 ---
 
 ## 📊 Data Sources
-This project uses the **E-Commerce Public Dataset** from **[https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download]**.
+This project uses the **E-Commerce Public Dataset** from **[dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download)**.
 
 ---
 
