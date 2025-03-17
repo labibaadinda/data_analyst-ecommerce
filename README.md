@@ -54,7 +54,7 @@ The goal is to analyze customer behavior, purchase patterns, and key business me
 ├── image_1.png                    # screenshot streamlit app page overview 
 ├── image_2.png                    # screenshot streamlit app page insightful graph 
 ├── requirements.txt               # Python dependencies
-└── url.txt                        # Reference URLs or dataset links
+└── url.txt                        # URL for this project
 ```
 
 ---
