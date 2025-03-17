@@ -126,7 +126,7 @@ if page == "Overview":
 
 elif page == "Insightful Graph":
     st.title('Graph E-Commerce Public Data Analysis')
-    st.markdown("<h4>This dashboard provides powerful insights by analyzing and visualizing E-Commerce public data through various graphs, helping you gain meaningful patterns and trends.</h4>", unsafe_allow_html=True)
+    st.markdown("<h6>This dashboard provides powerful insights by analyzing and visualizing E-Commerce public data through various graphs, helping you gain meaningful patterns and trends.</h6>", unsafe_allow_html=True)
     st.write(' ')
 
     # Load DataFrame from Dictionary

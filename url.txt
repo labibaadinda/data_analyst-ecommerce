@@ -1,6 +1,3 @@
 # access my app
-<<<<<<< HEAD
+
 https://dataanalyst-ecommerce-dicoding-labibaadinda.streamlit.app/
-=======
-https://dataanalyst-ecommerce-dicoding-labibaadinda.streamlit.app/
->>>>>>> d729b3e996933235ce8b86dc3b9e71842ba4f5dc
