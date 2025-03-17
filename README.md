@@ -2,7 +2,6 @@
 
 ![Dashboard Screenshot 1](image1.png)
 ![Dashboard Screenshot 2](image2.png)
-![Dashboard Screenshot 3](image3.png)
 
 ---
 
