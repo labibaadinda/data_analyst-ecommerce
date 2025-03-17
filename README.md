@@ -1,8 +1,8 @@
 # E-Commerce Public Data Analysis with Python - Dicoding
 
-<img src="image1.png" width="600" alt="Dashboard Screenshot 1">
-<img src="image2.png" width="600" alt="Dashboard Screenshot 2">
-<img src="image3.png" width="600" alt="Dashboard Screenshot 3">
+![Dashboard Screenshot 1](image1.png)
+![Dashboard Screenshot 2](image2.png)
+![Dashboard Screenshot 3](image3.png)
 
 ---
 
