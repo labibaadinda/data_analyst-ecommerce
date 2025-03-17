@@ -1,7 +1,7 @@
 # E-Commerce Public Data Analysis with Python - Dicoding
 
-![Dashboard Screenshot 1](image1.png)
-![Dashboard Screenshot 2](image2.png)
+![Dashboard Screenshot 1](image_1.png)
+![Dashboard Screenshot 2](image_2.png)
 
 ---
 
