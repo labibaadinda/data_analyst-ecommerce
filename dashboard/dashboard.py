@@ -15,8 +15,6 @@ csv_files = glob.glob(os.path.join(current_dir, "*.csv"))
 
 # Correct way to store CSVs in a dictionary (key = filename, value = DataFrame)
 dataframes_dict = {os.path.basename(file): pd.read_csv(file) for file in csv_files}
-import os
-import streamlit as st
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -24,7 +22,11 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 # Define the full image path
 image_path = os.path.join(current_dir, "logo.png")
 
-
+# Function to filter invalid datetime entries
+def filter_invalid_dates(df, column):
+    invalid_entries = df[~pd.to_datetime(df[column], errors='coerce').notna()]
+    print("Invalid entries detected:\n", invalid_entries)
+    return df[pd.to_datetime(df[column], errors='coerce').notna()]
 # Sidebar
 # Custom CSS to reduce sidebar width
 st.markdown(
@@ -60,16 +62,40 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+# Load the cleaned dataset
+df_order_approved = dataframes_dict["cleaned_df_customer.csv"]
+
+# Filter out invalid datetime entries
+df_order_approved = filter_invalid_dates(df_order_approved, "order_approved_at")
+
+# Safely convert the 'order_approved_at' column to datetime
+df_order_approved["order_approved_at"] = pd.to_datetime(df_order_approved["order_approved_at"], errors='coerce')
+
+# Handle NaT values if necessary
+df_order_approved["order_approved_at"].fillna(pd.Timestamp('today'), inplace=True)
+
+# Define the min and max dates based on the 'order_approved_at' column
+min_date = df_order_approved["order_approved_at"].min()
+max_date = df_order_approved["order_approved_at"].max()
+
 with st.sidebar:
     st.image(image_path, width=220)
     st.markdown("<h4 style='text-align: center;'>DINS TECH</h4>", unsafe_allow_html=True)
     st.write("Smart Solutions for a Digital World")
     st.write("---")  # Horizontal line for separation
+    # Date Range input
+    start_date, end_date = st.date_input(
+        label="Select Date Range",
+        value=[min_date, max_date],
+        min_value=min_date,
+        max_value=max_date
+    )
+    st.write("---")  # Horizontal line for separation
 
     st.write("📊 **Dashboard Navigation**")
     page = st.radio(
         "Select a page:",
-        ["Overview", "Graph for qna", "Graph additional for get Insights"],
+        ["Overview", "Insightful Graph"],
         index=0
     )
 
@@ -98,9 +124,9 @@ if page == "Overview":
     st.write("**GitHub:** [Profil GitHub](https://github.com/labibaadinda)")
 
 
-elif page == "Graph for qna":
+elif page == "Insightful Graph":
     st.title('Graph E-Commerce Public Data Analysis')
-    st.markdown("<h4>This is a graph for qna.</h4>", unsafe_allow_html=True)
+    st.markdown("<h4>This dashboard provides powerful insights by analyzing and visualizing E-Commerce public data through various graphs, helping you gain meaningful patterns and trends.</h4>", unsafe_allow_html=True)
     st.write(' ')
 
     # Load DataFrame from Dictionary
@@ -125,8 +151,6 @@ elif page == "Graph for qna":
     order_2018_counts = order_2018_counts.reindex(range(1, 13), fill_value=0)
 
     st.write(' ')
-    st.markdown("<h4>1. Bagaimana tren penjualan dari tahun 2016 hingga 2018?</h4>", unsafe_allow_html=True)
-
 
     # Streamlit App Title
     st.subheader("📊 Total Orders Per Month (2016-2018)")
@@ -150,11 +174,8 @@ elif page == "Graph for qna":
     # Display the plot in Streamlit
     st.pyplot(fig)
 
-    st.write('Berdasarkan grafik, terlihat bahwa jumlah pesanan mengalami lonjakan signifikan pada akhir tahun 2017, khususnya pada bulan November. Kenaikan drastis ini kemungkinan besar disebabkan oleh event promosi besar-besaran di e-commerce, seperti diskon akhir tahun, atau peningkatan aktivitas belanja menjelang liburan Natal dan Tahun Baru. Januari 2018 mengalami kenaikan kembali dari bulan sebelumnya. Setelah lonjakan tersebut, tren penjualan kembali stabil di awal 2018, dengan jumlah pesanan yang lebih rendah dibandingkan November 2017. Pola ini mengindikasikan adanya tren musiman, di mana jumlah transaksi meningkat secara signifikan menjelang akhir tahun, kemudian menurun kembali setelah periode promosi berakhir. Sementara itu, tren penjualan sepanjang tahun 2016 terlihat lebih rendah dan stabil, menandakan bahwa e-commerce masih dalam tahap awal pertumbuhan pada periode tersebut. Pada tahun 2017, terjadi peningkatan transaksi secara bertahap sebelum mencapai puncaknya November 2017. Sedangkan pada tahun 2018, penjualan awalnya cukup stabil, tetapi kemudian mengalami penurunan drastis setelah bulan Agustus, yang bisa disebabkan oleh faktor eksternal seperti perubahan tren belanja, strategi bisnis, atau kondisi pasar. ')
+    st.write(' ')
 
-    st.write(' ')
-    st.write(' ')
-    st.write(' ')
 
 
     # Load dataset from dictionary
@@ -177,7 +198,6 @@ elif page == "Graph for qna":
     info_late_ontime = df_order_customer.groupby('ontime_or_late').size()
     info_late_ontime = (info_late_ontime / info_late_ontime.sum()) * 100  # Convert to percentage
     
-    st.markdown("<h4>2. Berapa persen pesanan yang diantarkan terlambat dibandingkan dengan total pesanan yang berhasil dikirim?</h4>", unsafe_allow_html=True)
     st.write(' ')
     # Streamlit Title
     st.subheader("📦 Order Delivery Performance")
@@ -192,8 +212,6 @@ elif page == "Graph for qna":
     # Format percentage values correctly
     df_info["Percentage (%)"] = df_info["Percentage (%)"].map(lambda x: f"{x:.2f} %")
 
-    # Display the formatted DataFrame in Streamlit
-    st.write("### 📊 Percentage of On-Time vs Late Orders")
     st.dataframe(df_info, hide_index=True)  # Hide default index
 
 
@@ -208,10 +226,6 @@ elif page == "Graph for qna":
     # Display the plot in Streamlit
     st.pyplot(fig)
     st.write(' ')
-    st.write('Berdasarkan analisis data, ditemukan bahwa 10.85% dari total pesanan mengalami keterlambatan dalam pengiriman, sementara 89.15% pesanan dikirim tepat waktu sesuai estimasi yang diberikan kepada pelanggan. Hal ini menunjukkan bahwa sebagian besar sistem pengiriman dalam platform e-commerce ini berjalan dengan baik dan sesuai jadwal. Namun, masih ada sekitar 8.11% pesanan yang tidak sampai tepat waktu, yang bisa berdampak pada kepuasan pelanggan. Dengan angka keterlambatan 10.85%, platform ini sudah cukup efisien, tetapi ada peluang untuk mengoptimalkan layanan agar semakin mendekati 100% ketepatan waktu dalam pengiriman pesanan ke pelanggan.')
-
-elif page == "Graph additional for get Insights":
-    st.write(' ')
     # Load dataset from dictionary
     df_customer = dataframes_dict["cleaned_df_customer.csv"]
 
@@ -219,7 +233,7 @@ elif page == "Graph additional for get Insights":
     top_cities = df_customer['customer_city'].value_counts().nlargest(5)
 
     # Streamlit Title
-    st.title("📍 Top 5 Customer Cities")
+    st.subheader("📍 Top 5 Customer Cities")
 
     # Display the table in Streamlit
     df_top_cities = top_cities.reset_index()
@@ -248,7 +262,7 @@ elif page == "Graph additional for get Insights":
     payment_counts = df_payments['payment_type'].value_counts()
 
     # Streamlit Title
-    st.title("💳 Most Used Payment Types by Customers")
+    st.subheader("💳 Most Used Payment Types by Customers")
 
     # Display the table in Streamlit
     df_payment_types = payment_counts.reset_index()
@@ -276,7 +290,7 @@ elif page == "Graph additional for get Insights":
     top_products = df_category['product_category_name'].value_counts().nlargest(10)
 
     # Streamlit Title
-    st.title("🛒 Top 10 Most Purchased Products")
+    st.subheader("🛒 Top 10 Most Purchased Products")
 
     # Display the table in Streamlit
     df_top_products = top_products.reset_index()
