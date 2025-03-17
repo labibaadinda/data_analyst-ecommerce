@@ -1,10 +1,16 @@
 # E-Commerce Public Data Analysis with Python - Dicoding
 
-![Dashboard Screenshot 1](image1.png)
-![Dashboard Screenshot 2](image2.png)
-![Dashboard Screenshot 3](image3.png)
+<img src="image1.png" width="600" alt="Dashboard Screenshot 1">
+<img src="image2.png" width="600" alt="Dashboard Screenshot 2">
+<img src="image3.png" width="600" alt="Dashboard Screenshot 3">
 
+---
 
+🌐 Access the Live Dashboard:
+You can access the interactive dashboard here:
+[E-Commerce Data Dashboard](https://dataanalyst-ecommerce-dicoding-labibaadinda.streamlit.app/)
+
+---
 
 ## 📖 Table of Contents
 - [Overview](##overview)
@@ -88,6 +94,7 @@ jupyter notebook notebook.ipynb
 This project uses the **E-Commerce Public Dataset** from **[dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download)**.
 
 ---
+
 
 ## 📧 Contact
 If you have any questions, feel free to reach out:
