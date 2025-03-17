@@ -47,11 +47,14 @@ The goal is to analyze customer behavior, purchase patterns, and key business me
 │   ├── cleaned_order_2017.csv     # Order data in 2017
 │   ├── cleaned_order_2018.csv     # Order data in 2018
 │   ├── cleaned_order_payments_dataset.csv  # Payment details
-│   ├── logo.png        # logo
-├── notebook.ipynb      # Jupyter notebook for data wrangling & EDA
-├── README.md           # Project documentation (this file)
-├── requirements.txt    # Python dependencies
-└── url.txt             # Reference URLs or dataset links
+│   ├── logo.png                   # logo
+├── notebook.ipynb                 # Jupyter notebook for data wrangling & EDA
+├── E-commerce-public-dataset.zip  # dataset file
+├── README.md                      # Project documentation 
+├── image_1.png                    # screenshot streamlit app page overview 
+├── image_2.png                    # screenshot streamlit app page insightful graph 
+├── requirements.txt               # Python dependencies
+└── url.txt                        # Reference URLs or dataset links
 ```
 
 ---
