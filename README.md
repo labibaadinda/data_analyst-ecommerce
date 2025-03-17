@@ -49,7 +49,7 @@ The goal is to analyze customer behavior, purchase patterns, and key business me
 │   ├── cleaned_order_payments_dataset.csv  # Payment details
 │   ├── logo.png                   # logo
 ├── notebook.ipynb                 # Jupyter notebook for data wrangling & EDA
-├── E-commerce-public-dataset.zip  # dataset file
+├── E-commerce-public-dataset.zip  # dataset 
 ├── README.md                      # Project documentation 
 ├── image_1.png                    # screenshot streamlit app page overview 
 ├── image_2.png                    # screenshot streamlit app page insightful graph 
