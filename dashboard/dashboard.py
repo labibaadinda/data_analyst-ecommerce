@@ -84,12 +84,18 @@ with st.sidebar:
     st.write("Smart Solutions for a Digital World")
     st.write("---")  # Horizontal line for separation
     # Date Range input
-    start_date, end_date = st.date_input(
+    date_range = st.date_input(
         label="Select Date Range",
         value=[min_date, max_date],
         min_value=min_date,
         max_value=max_date
     )
+
+    if len(date_range) == 2:
+        start_date, end_date = date_range
+    else:
+        start_date = end_date = None
+
     st.write("---")  # Horizontal line for separation
 
     st.write("📊 **Dashboard Navigation**")
@@ -119,28 +125,12 @@ elif page == "Insightful Graph":
     st.markdown("<h6>This dashboard provides powerful insights by analyzing and visualizing E-Commerce public data through various graphs, helping you gain meaningful patterns and trends.</h6>", unsafe_allow_html=True)
     st.write(' ')
 
-    # ⛔ Cek dulu apakah tanggal sudah dipilih
-    if start_date and end_date:
-        # Load DataFrame from Dictionary
-        df_customer = dataframes_dict["cleaned_df_customer.csv"]
-
-        # Ensure datetime format
-        df_customer['order_purchase_timestamp'] = pd.to_datetime(df_customer['order_purchase_timestamp'])
-
-        # Filter by selected date range from sidebar
-        df_customer = df_customer[
-            (df_customer['order_purchase_timestamp'].dt.date >= start_date) &
-            (df_customer['order_purchase_timestamp'].dt.date <= end_date)
-        ]
-
-        # Tampilkan info filter tanggal
-        st.info(f"📆 Showing data from **{start_date}** to **{end_date}**")
-
-        # Lanjutkan ke grafik seperti biasa...
-        # ... (grafik order_2016, 2017, 2018 dst)
-
+    if start_date is not None and end_date is not None:
+        # lanjut ke load dataframe, filter, dan tampilkan grafik
+        ...
     else:
-        st.warning("📅 Please select a valid date range from the sidebar to view the graph.")
+        st.warning("📅 Please select both start and end date in the sidebar to view the data.")
+
 
 
     # Filter orders per year (masih berdasarkan data yang sudah difilter)
