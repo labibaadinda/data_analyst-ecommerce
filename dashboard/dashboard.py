@@ -99,16 +99,6 @@ with st.sidebar:
         index=0
     )
 
-# Create a placeholder
-message_placeholder = st.empty()
-
-# Display the selected page message temporarily
-message_placeholder.write(f"### You selected: {page}")
-
-# Wait for 2 seconds, then clear the message
-time.sleep(1)
-
-message_placeholder.empty() #Display selected page
 # Main
 if page == "Overview":
     st.title('E-Commerce Public Data Analysis')
@@ -132,49 +122,42 @@ elif page == "Insightful Graph":
     # Load DataFrame from Dictionary
     df_customer = dataframes_dict["cleaned_df_customer.csv"]
 
-    # Ensure 'order_purchase_timestamp' is in datetime format
+    # Ensure datetime format
     df_customer['order_purchase_timestamp'] = pd.to_datetime(df_customer['order_purchase_timestamp'])
 
-    # Filter orders per year
+    # Filter by selected date range from sidebar
+    df_customer = df_customer[
+        (df_customer['order_purchase_timestamp'].dt.date >= start_date) &
+        (df_customer['order_purchase_timestamp'].dt.date <= end_date)
+    ]
+
+    # Tampilkan info filter tanggal
+    st.info(f"📆 Showing data from **{start_date}** to **{end_date}**")
+
+    # Filter orders per year (masih berdasarkan data yang sudah difilter)
     order_in_2016 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2016]
     order_in_2017 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2017]
     order_in_2018 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2018]
 
     # Count orders per month
-    order_2016_counts = order_in_2016['order_purchase_timestamp'].dt.month.value_counts().sort_index()
-    order_2017_counts = order_in_2017['order_purchase_timestamp'].dt.month.value_counts().sort_index()
-    order_2018_counts = order_in_2018['order_purchase_timestamp'].dt.month.value_counts().sort_index()
+    order_2016_counts = order_in_2016['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
+    order_2017_counts = order_in_2017['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
+    order_2018_counts = order_in_2018['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
 
-    # Ensure all months (1-12) are included, fill missing months with 0
-    order_2016_counts = order_2016_counts.reindex(range(1, 13), fill_value=0)
-    order_2017_counts = order_2017_counts.reindex(range(1, 13), fill_value=0)
-    order_2018_counts = order_2018_counts.reindex(range(1, 13), fill_value=0)
-
-    st.write(' ')
-
-    # Streamlit App Title
-    st.subheader("📊 Total Orders Per Month (2016-2018)")
-
-    # Create a Matplotlib figure
+    # 📊 Total Orders Per Month (2016–2018)
+    st.subheader("📊 Total Orders")
     fig, ax = plt.subplots(figsize=(10, 6))
-
-    # Plot data for each year
-    ax.plot(order_2016_counts.index, order_2016_counts.values, marker='o', linestyle='-', label='2016')
-    ax.plot(order_2017_counts.index, order_2017_counts.values, marker='s', linestyle='-', label='2017')
-    ax.plot(order_2018_counts.index, order_2018_counts.values, marker='^', linestyle='-', label='2018')
-
-    # Labels and title
+    ax.plot(order_2016_counts.index, order_2016_counts.values, marker='o', label='2016')
+    ax.plot(order_2017_counts.index, order_2017_counts.values, marker='s', label='2017')
+    ax.plot(order_2018_counts.index, order_2018_counts.values, marker='^', label='2018')
     ax.set_xlabel("Month")
     ax.set_ylabel("Total Orders")
-    ax.set_title("Total Orders Per Month by Year (2016-2018)")
-    ax.set_xticks(range(1, 13))  # Ensure months 1-12 appear
+    ax.set_title("Total Orders Based on Selected Date Range")
+    ax.set_xticks(range(1, 13))
     ax.legend()
     ax.grid(True)
-
-    # Display the plot in Streamlit
     st.pyplot(fig)
 
-    st.write(' ')
 
 
 
