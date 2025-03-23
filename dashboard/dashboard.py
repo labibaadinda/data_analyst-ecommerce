@@ -122,176 +122,187 @@ if page == "Overview":
 
 elif page == "Insightful Graph":
     st.title('Graph E-Commerce Public Data Analysis')
-    st.markdown("<h6>This dashboard provides powerful insights by analyzing and visualizing E-Commerce public data through various graphs, helping you gain meaningful patterns and trends.</h6>", unsafe_allow_html=True)
-    st.write(' ')
+    st.markdown("<h6>This dashboard provides powerful insights by analyzing and visualizing E-Commerce public data through various graphs.</h6>", unsafe_allow_html=True)
 
-    if start_date is not None and end_date is not None:
-        # lanjut ke load dataframe, filter, dan tampilkan grafik
-        ...
+    # Pastikan date_range sudah valid
+    if len(date_range) == 2:  # Cek apakah user sudah memilih tanggal
+        start_date, end_date = date_range
+        df_customer = dataframes_dict["cleaned_df_customer.csv"]
+        df_customer['order_purchase_timestamp'] = pd.to_datetime(df_customer['order_purchase_timestamp'], errors="coerce")
+
+        # Filter berdasarkan tanggal yang dipilih
+        df_customer = df_customer[
+            (df_customer['order_purchase_timestamp'].dt.date >= start_date) &
+            (df_customer['order_purchase_timestamp'].dt.date <= end_date)
+        ]
+
+        # Tampilkan info tanggal yang dipilih
+        st.info(f"📆 Showing data from **{start_date}** to **{end_date}**")
+
+        # --- Graph 1: Orders per Month ---
+        # Filter data per tahun dan buat grafik
+        order_in_2016 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2016]
+        order_in_2017 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2017]
+        order_in_2018 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2018]
+
+        order_2016_counts = order_in_2016['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
+        order_2017_counts = order_in_2017['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
+        order_2018_counts = order_in_2018['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(order_2016_counts.index, order_2016_counts.values, marker='o', label='2016')
+        ax.plot(order_2017_counts.index, order_2017_counts.values, marker='s', label='2017')
+        ax.plot(order_2018_counts.index, order_2018_counts.values, marker='^', label='2018')
+        ax.set_xlabel("Month")
+        ax.set_ylabel("Total Orders")
+        ax.set_title("Orders Per Month by Year")
+        ax.set_xticks(range(1, 13))
+        ax.legend()
+        ax.grid(True)
+        st.pyplot(fig)
+
+        st.write(' ')
+        
+        # --- Graph 2: Order Status ---
+        
+        # Load dataset from dictionary
+        df_order_customer = dataframes_dict["cleaned_df_customer.csv"]
+
+        # Fix column names (strip spaces)
+        df_order_customer.columns = df_order_customer.columns.str.strip()
+
+        # Load dataset from dictionary
+        df_order_customer = dataframes_dict["cleaned_df_customer.csv"]
+
+        # Ensure dates are in datetime format
+        df_order_customer['order_delivered_customer_date'] = pd.to_datetime(df_order_customer['order_delivered_customer_date'])
+        df_order_customer['order_estimated_delivery_date'] = pd.to_datetime(df_order_customer['order_estimated_delivery_date'])
+
+        # Create a new column: 'ontime_or_late'
+        df_order_customer['ontime_or_late'] = np.where(df_order_customer['order_delivered_customer_date'] <= df_order_customer['order_estimated_delivery_date'], 'On-Time', 'Late')
+
+        # Calculate percentage of "On-Time" vs "Late" order_customer
+        info_late_ontime = df_order_customer.groupby('ontime_or_late').size()
+        info_late_ontime = (info_late_ontime / info_late_ontime.sum()) * 100  # Convert to percentage
+        
+        st.write(' ')
+        # Streamlit Title
+        st.subheader("📦 Order Delivery Performance")
+        st.write(' ')
+
+        ## Convert the grouped Series into a DataFrame and reset index
+        df_info = info_late_ontime.reset_index()
+
+        # Rename the columns properly
+        df_info.columns = ["Order Status", "Percentage (%)"]
+
+        # Format percentage values correctly
+        df_info["Percentage (%)"] = df_info["Percentage (%)"].map(lambda x: f"{x:.2f} %")
+
+        st.dataframe(df_info, hide_index=True)  # Hide default index
+
+
+        # Create Bar Chart
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.bar(info_late_ontime.index, info_late_ontime.values, color=["red", "green"])
+        ax.set_xlabel("Order Status")
+        ax.set_ylabel("Percentage (%)")
+        ax.set_title("Order Status Distribution (On-Time vs Late)")
+        ax.grid(axis="y", linestyle="--", alpha=0.7)
+
+        # Display the plot in Streamlit
+        st.pyplot(fig)
+        st.write(' ')
+        # Load dataset from dictionary
+        df_customer = dataframes_dict["cleaned_df_customer.csv"]
+
+        # Get top 5 cities with the most customers
+        top_cities = df_customer['customer_city'].value_counts().nlargest(5)
+
+        # Streamlit Title
+        st.subheader("📍 Top 5 Customer Cities")
+
+        # Display the table in Streamlit
+        df_top_cities = top_cities.reset_index()
+        df_top_cities.columns = ["City", "Total Customers"]  # Rename columns
+        st.dataframe(df_top_cities, hide_index=True)
+
+        # Create a bar chart
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.bar(top_cities.index, top_cities.values, color="blue")
+        ax.set_xlabel("City")
+        ax.set_ylabel("Total Customers")
+        ax.set_title("Top 5 Cities with Most Customers")
+        ax.grid(axis="y", linestyle="--", alpha=0.7)
+
+        # Display the chart in Streamlit
+        st.pyplot(fig)
+        
+        st.write(' ')
+        st.write(' ')
+
+
+        # Load dataset from dictionary
+        df_payments = dataframes_dict["cleaned_order_payments_dataset.csv"]
+
+        # Get the most used payment types
+        payment_counts = df_payments['payment_type'].value_counts()
+
+        # Streamlit Title
+        st.subheader("💳 Most Used Payment Types by Customers")
+
+        # Display the table in Streamlit
+        df_payment_types = payment_counts.reset_index()
+        df_payment_types.columns = ["Payment Type", "Total Transactions"]
+        st.dataframe(df_payment_types, hide_index=True)
+
+        # Create a bar chart
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.bar(payment_counts.index, payment_counts.values, color="purple")
+        ax.set_xlabel("Payment Type")
+        ax.set_ylabel("Total Transactions")
+        ax.set_title("Most Used Payment Types by Customers")
+        ax.grid(axis="y", linestyle="--", alpha=0.7)
+
+        # Display the chart in Streamlit
+        st.pyplot(fig)
+        
+        st.write(' ')
+        st.write(' ')
+        
+        # Load dataset from dictionary
+        df_category = dataframes_dict["cleaned_df_category.csv"]
+
+        # Get the top 10 most purchased product categories
+        top_products = df_category['product_category_name'].value_counts().nlargest(10)
+
+        # Streamlit Title
+        st.subheader("🛒 Top 10 Most Purchased Products")
+
+        # Display the table in Streamlit
+        df_top_products = top_products.reset_index()
+        df_top_products.columns = ["Product Category", "Total Purchases"]
+        st.dataframe(df_top_products, hide_index=True)
+
+        # Create a line chart
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(top_products.index, top_products.values, marker='o', linestyle='-', color="blue")
+
+        # Labeling
+        ax.set_xlabel("Product Category")
+        ax.set_ylabel("Total Purchases")
+        ax.set_title("Top 10 Most Purchased Products")
+        ax.set_xticklabels(top_products.index, rotation=25)
+        ax.grid(axis="y", linestyle="--", alpha=0.7)
+
+        # Display the chart in Streamlit
+        st.pyplot(fig)
+        
+
+    
     else:
         st.warning("📅 Please select both start and end date in the sidebar to view the data.")
 
 
-
-    # Filter orders per year (masih berdasarkan data yang sudah difilter)
-    order_in_2016 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2016]
-    order_in_2017 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2017]
-    order_in_2018 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2018]
-
-    # Count orders per month
-    order_2016_counts = order_in_2016['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
-    order_2017_counts = order_in_2017['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
-    order_2018_counts = order_in_2018['order_purchase_timestamp'].dt.month.value_counts().sort_index().reindex(range(1, 13), fill_value=0)
-
-    # 📊 Total Orders Per Month (2016–2018)
-    st.subheader("📊 Total Orders")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(order_2016_counts.index, order_2016_counts.values, marker='o', label='2016')
-    ax.plot(order_2017_counts.index, order_2017_counts.values, marker='s', label='2017')
-    ax.plot(order_2018_counts.index, order_2018_counts.values, marker='^', label='2018')
-    ax.set_xlabel("Month")
-    ax.set_ylabel("Total Orders")
-    ax.set_title("Total Orders Based on Selected Date Range")
-    ax.set_xticks(range(1, 13))
-    ax.legend()
-    ax.grid(True)
-    st.pyplot(fig)
-
-
-
-
-    # Load dataset from dictionary
-    df_order_customer = dataframes_dict["cleaned_df_customer.csv"]
-
-    # Fix column names (strip spaces)
-    df_order_customer.columns = df_order_customer.columns.str.strip()
-
-    # Load dataset from dictionary
-    df_order_customer = dataframes_dict["cleaned_df_customer.csv"]
-
-    # Ensure dates are in datetime format
-    df_order_customer['order_delivered_customer_date'] = pd.to_datetime(df_order_customer['order_delivered_customer_date'])
-    df_order_customer['order_estimated_delivery_date'] = pd.to_datetime(df_order_customer['order_estimated_delivery_date'])
-
-    # Create a new column: 'ontime_or_late'
-    df_order_customer['ontime_or_late'] = np.where(df_order_customer['order_delivered_customer_date'] <= df_order_customer['order_estimated_delivery_date'], 'On-Time', 'Late')
-
-    # Calculate percentage of "On-Time" vs "Late" order_customer
-    info_late_ontime = df_order_customer.groupby('ontime_or_late').size()
-    info_late_ontime = (info_late_ontime / info_late_ontime.sum()) * 100  # Convert to percentage
-    
-    st.write(' ')
-    # Streamlit Title
-    st.subheader("📦 Order Delivery Performance")
-    st.write(' ')
-
-    ## Convert the grouped Series into a DataFrame and reset index
-    df_info = info_late_ontime.reset_index()
-
-    # Rename the columns properly
-    df_info.columns = ["Order Status", "Percentage (%)"]
-
-    # Format percentage values correctly
-    df_info["Percentage (%)"] = df_info["Percentage (%)"].map(lambda x: f"{x:.2f} %")
-
-    st.dataframe(df_info, hide_index=True)  # Hide default index
-
-
-    # Create Bar Chart
-    fig, ax = plt.subplots(figsize=(8, 6))
-    ax.bar(info_late_ontime.index, info_late_ontime.values, color=["red", "green"])
-    ax.set_xlabel("Order Status")
-    ax.set_ylabel("Percentage (%)")
-    ax.set_title("Order Status Distribution (On-Time vs Late)")
-    ax.grid(axis="y", linestyle="--", alpha=0.7)
-
-    # Display the plot in Streamlit
-    st.pyplot(fig)
-    st.write(' ')
-    # Load dataset from dictionary
-    df_customer = dataframes_dict["cleaned_df_customer.csv"]
-
-    # Get top 5 cities with the most customers
-    top_cities = df_customer['customer_city'].value_counts().nlargest(5)
-
-    # Streamlit Title
-    st.subheader("📍 Top 5 Customer Cities")
-
-    # Display the table in Streamlit
-    df_top_cities = top_cities.reset_index()
-    df_top_cities.columns = ["City", "Total Customers"]  # Rename columns
-    st.dataframe(df_top_cities, hide_index=True)
-
-    # Create a bar chart
-    fig, ax = plt.subplots(figsize=(8, 6))
-    ax.bar(top_cities.index, top_cities.values, color="blue")
-    ax.set_xlabel("City")
-    ax.set_ylabel("Total Customers")
-    ax.set_title("Top 5 Cities with Most Customers")
-    ax.grid(axis="y", linestyle="--", alpha=0.7)
-
-    # Display the chart in Streamlit
-    st.pyplot(fig)
-    
-    st.write(' ')
-    st.write(' ')
-
-
-    # Load dataset from dictionary
-    df_payments = dataframes_dict["cleaned_order_payments_dataset.csv"]
-
-    # Get the most used payment types
-    payment_counts = df_payments['payment_type'].value_counts()
-
-    # Streamlit Title
-    st.subheader("💳 Most Used Payment Types by Customers")
-
-    # Display the table in Streamlit
-    df_payment_types = payment_counts.reset_index()
-    df_payment_types.columns = ["Payment Type", "Total Transactions"]
-    st.dataframe(df_payment_types, hide_index=True)
-
-    # Create a bar chart
-    fig, ax = plt.subplots(figsize=(8, 6))
-    ax.bar(payment_counts.index, payment_counts.values, color="purple")
-    ax.set_xlabel("Payment Type")
-    ax.set_ylabel("Total Transactions")
-    ax.set_title("Most Used Payment Types by Customers")
-    ax.grid(axis="y", linestyle="--", alpha=0.7)
-
-    # Display the chart in Streamlit
-    st.pyplot(fig)
-    
-    st.write(' ')
-    st.write(' ')
-    
-    # Load dataset from dictionary
-    df_category = dataframes_dict["cleaned_df_category.csv"]
-
-    # Get the top 10 most purchased product categories
-    top_products = df_category['product_category_name'].value_counts().nlargest(10)
-
-    # Streamlit Title
-    st.subheader("🛒 Top 10 Most Purchased Products")
-
-    # Display the table in Streamlit
-    df_top_products = top_products.reset_index()
-    df_top_products.columns = ["Product Category", "Total Purchases"]
-    st.dataframe(df_top_products, hide_index=True)
-
-    # Create a line chart
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(top_products.index, top_products.values, marker='o', linestyle='-', color="blue")
-
-    # Labeling
-    ax.set_xlabel("Product Category")
-    ax.set_ylabel("Total Purchases")
-    ax.set_title("Top 10 Most Purchased Products")
-    ax.set_xticklabels(top_products.index, rotation=25)
-    ax.grid(axis="y", linestyle="--", alpha=0.7)
-
-    # Display the chart in Streamlit
-    st.pyplot(fig)
-    
 
     
