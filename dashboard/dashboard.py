@@ -119,20 +119,29 @@ elif page == "Insightful Graph":
     st.markdown("<h6>This dashboard provides powerful insights by analyzing and visualizing E-Commerce public data through various graphs, helping you gain meaningful patterns and trends.</h6>", unsafe_allow_html=True)
     st.write(' ')
 
-    # Load DataFrame from Dictionary
-    df_customer = dataframes_dict["cleaned_df_customer.csv"]
+    # ⛔ Cek dulu apakah tanggal sudah dipilih
+    if start_date and end_date:
+        # Load DataFrame from Dictionary
+        df_customer = dataframes_dict["cleaned_df_customer.csv"]
 
-    # Ensure datetime format
-    df_customer['order_purchase_timestamp'] = pd.to_datetime(df_customer['order_purchase_timestamp'])
+        # Ensure datetime format
+        df_customer['order_purchase_timestamp'] = pd.to_datetime(df_customer['order_purchase_timestamp'])
 
-    # Filter by selected date range from sidebar
-    df_customer = df_customer[
-        (df_customer['order_purchase_timestamp'].dt.date >= start_date) &
-        (df_customer['order_purchase_timestamp'].dt.date <= end_date)
-    ]
+        # Filter by selected date range from sidebar
+        df_customer = df_customer[
+            (df_customer['order_purchase_timestamp'].dt.date >= start_date) &
+            (df_customer['order_purchase_timestamp'].dt.date <= end_date)
+        ]
 
-    # Tampilkan info filter tanggal
-    st.info(f"📆 Showing data from **{start_date}** to **{end_date}**")
+        # Tampilkan info filter tanggal
+        st.info(f"📆 Showing data from **{start_date}** to **{end_date}**")
+
+        # Lanjutkan ke grafik seperti biasa...
+        # ... (grafik order_2016, 2017, 2018 dst)
+
+    else:
+        st.warning("📅 Please select a valid date range from the sidebar to view the graph.")
+
 
     # Filter orders per year (masih berdasarkan data yang sudah difilter)
     order_in_2016 = df_customer[df_customer['order_purchase_timestamp'].dt.year == 2016]
