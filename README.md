@@ -102,5 +102,6 @@ This project uses the **E-Commerce Public Dataset** from **[dataset](https://www
 If you have any questions, feel free to reach out:
 - **Name:** Labiba Adinda Zahwana
 - **LinkedIn:** [Profile](https://id.linkedin.com/in/labibaadinda/)
+- **Email:** labibaadinda11@gmail.com
 - **GitHub:** [Profile](https://github.com/labibaadinda)
 
