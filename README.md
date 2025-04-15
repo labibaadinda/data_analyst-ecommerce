@@ -33,7 +33,7 @@ The goal is to analyze customer behavior, purchase patterns, and key business me
 
 ## 📂 Project Structure
 ```
-📂 data_analyst-ecommerce-dicoding/      # Main project directory
+📂 data_analyst-ecommerce/      # Main project directory
 ├── 📂 dashboard/   # Streamlit Dashboard
 │   ├── dashboard.py    # Streamlit app script
 │   ├── main_data.csv   # Main dataset for dashboard
@@ -64,7 +64,7 @@ To run this project, follow these steps:
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/labibaadinda/data_analyst-ecommerce-dicoding.git
+git clone https://github.com/labibaadinda/data_analyst-ecommerce.git
 cd data_analyst-ecommerce-dicoding
 ```
 
@@ -80,7 +80,7 @@ pip install -r requirements.txt
 ### 📊 **Run the Streamlit Dashboard**
 To launch the interactive dashboard:
 ```bash
-cd data_analyst-ecommerce-dicoding/dashboard
+cd data_analyst-ecommerce/dashboard
 streamlit run dashboard.py
 ```
 
