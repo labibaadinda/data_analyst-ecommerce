@@ -33,7 +33,7 @@ The goal is to analyze customer behavior, purchase patterns, and key business me
 
 ## 📂 Project Structure
 ```
-📂 submission/      # Main project directory
+📂 data_analyst-ecommerce-dicoding/      # Main project directory
 ├── 📂 dashboard/   # Streamlit Dashboard
 │   ├── dashboard.py    # Streamlit app script
 │   ├── main_data.csv   # Main dataset for dashboard
@@ -80,7 +80,7 @@ pip install -r requirements.txt
 ### 📊 **Run the Streamlit Dashboard**
 To launch the interactive dashboard:
 ```bash
-cd submission/dashboard
+cd data_analyst-ecommerce-dicoding/dashboard
 streamlit run dashboard.py
 ```
 
